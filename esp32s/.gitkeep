@@ -1,0 +1,8 @@
+# .gitkeep is a placeholder file used to ensure that empty directories are tracked by Git.
+# By default, Git does not track empty folders, so adding a .gitkeep file allows the folder to be committed.
+# Usage:
+# 1. Create a .gitkeep file in the empty directory.
+# 2. Add and commit it to your repository:
+#    git add path/to/empty_directory/.gitkeep
+#    git commit -m "Keep empty directory for future use"
+# You can name the file anything (e.g., .keep), but .gitkeep is a common convention.
