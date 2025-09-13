@@ -1,27 +1,30 @@
-# MMA_PROJECT
-SmartSort Bin is a modular waste-sorting system using Raspberry Pi and ESP32. It automates lid control, monitors fill levels, and provides real-time feedback via OLED and audio. With UART-based communication and sensor-driven actuation, it’s designed for scalable, smart disposal.
-# SmartSort Bin ♻️
+# Pi TFLite inference (hand-first)
 
-SmartSort Bin is an intelligent, sensor-driven waste sorting system designed to automate bin lid control, monitor fill levels, and provide real-time feedback via audio and display. Built using Raspberry Pi and ESP32-S, it integrates servos, ultrasonic sensors, OLED display, DFPlayer Mini, and camera module for a complete IoT solution.
+This folder contains a small script to run TFLite inference on the Raspberry Pi with a hand-first flow (MediaPipe). It crops around the detected hand, runs the model, and sends simple UART commands to an ESP32.
 
-## 🚀 Features
-- Automatic lid opening via servo motors
-- Fill level detection using HC-SR04 ultrasonic sensors
-- Audio feedback using DFPlayer Mini
-- Visual status via OLED display
-- UART-based communication between Raspberry Pi and ESP32
-- Modular, scalable design for future waste classification
-## 📁 Folder Overview
-- `RaspberryPi/`: Python scripts for display, audio, camera, and UART
-- `ESP32/`: Arduino code for servo, sensor, and command handling
-- `Schematics/`: Wiring diagrams, pin maps, and Fritzing files
-- `Docs/`: System overview, task breakdown, and troubleshooting notes
+Files:
+- `tflite_inference.py` - main script
+- `requirements.txt` - suggested Python packages; pin versions on Pi as needed
 
-## 🛠️ Technologies
-- Raspberry Pi 4
-- ESP32-S
-- DFPlayer Mini
-- HC-SR04 Ultrasonic Sensors
-- OLED Display (I²C)
-- Servo Motors
-- Fritzing, EasyEDA, Python, Arduino
+Quick start on Raspberry Pi (example):
+
+1. Create and activate a virtual environment:
+
+```powershell
+python3 -m venv ~/venv-smartbin; . ~/venv-smartbin/Scripts/Activate.ps1
+pip install --upgrade pip
+pip install -r requirements.txt
+```
+
+2. Copy your `model.tflite` and `labels.txt` into this folder.
+
+3. Run the script (camera 0):
+
+```powershell
+python tflite_inference.py --model model.tflite --labels labels.txt --camera 0 --serial /dev/ttyUSB0 --show
+```
+
+Notes:
+- On Raspberry Pi you should prefer `tflite-runtime` instead of full `tensorflow` for speed and lower memory.
+- If you built a quantized INT8 model you will need a representative dataset for conversion and `tflite_runtime` that supports quantized ops.
+- Adjust `--threshold` and `--stability-frames` for your use case.
